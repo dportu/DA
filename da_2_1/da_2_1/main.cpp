@@ -31,15 +31,14 @@ bool resuelveCaso() {
    }
    // resolver el caso posiblemente llamando a otras funciones
    if (N != 1) {
-       suma = q.top();
-       q.pop();
-       suma += q.top();
-       q.pop();
 
-       for (int i = 2; i < N; i++) {
+       for (int i = 0; i < N; i++) {
            int a = q.top();
            q.pop();
-           suma += (suma + a);
+          int b = q.top();
+          q.pop();
+           suma = (a + b);
+          q.push(suma);
        }
    }
    /*
