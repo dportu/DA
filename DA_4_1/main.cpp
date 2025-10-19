@@ -5,54 +5,55 @@
 using namespace std;
 
 bool resuelveCaso() {
-   if (!std::cin) {
-      return false;
-   }
+    int v, a;
+    cin >> v >> a;
 
+    if (!std::cin) {
+        return false;
+    }
 
-   int v, a;
-   Grafo g(v); //constructor grafo
+    Grafo g(v); //constructor grafo
 
-   for(int i = 0; i < a; i++) {
-      int a, b;
-      cin >> a >> b;
-      g.ponArista(a, b);
-   } //grafo construido con todas las aristas 
+    for (int i = 0; i < a; i++) {
+        int a, b;
+        cin >> a >> b;
+        g.ponArista(a, b);
+    } //grafo construido con todas las aristas 
 
-   //calculamos el dfs del origen
-   CaminosDFS camino(g, 0);
+    //calculamos el dfs del origen
+    CaminosDFS camino(g, 0);
 
-   int i = 0;
-   bool conexo = camino.conexo();
+    int i = 0;
+    bool libre = camino.aciclico() && camino.conexo();
 
-   // escribir la soluciÃ³n
+    // escribir la solución
 
-   if(conexo) {
-      cout << "SI\n";
-   }
-   else {
-      cout << "NO\n";
-   }
+    if (libre) {
+        cout << "SI\n";
+    }
+    else {
+        cout << "NO\n";
+    }
 
-   return true;
+    return true;
 }
 
 //@ </answer>
-//  Lo que se escriba dejado de esta lÃ­nea ya no forma parte de la soluciÃ³n.
+//  Lo que se escriba dejado de esta línea ya no forma parte de la solución.
 
 int main() {
-   // ajustes para que cin extraiga directamente de un fichero
+    // ajustes para que cin extraiga directamente de un fichero
 #ifndef DOMJUDGE
-   std::ifstream in("casos.txt");
-   auto cinbuf = std::cin.rdbuf(in.rdbuf());
+    std::ifstream in("casos.txt");
+    auto cinbuf = std::cin.rdbuf(in.rdbuf());
 #endif
-   
-   while (resuelveCaso());
-   
-   // para dejar todo como estaba al principio
+
+    while (resuelveCaso());
+
+    // para dejar todo como estaba al principio
 #ifndef DOMJUDGE
-   std::cin.rdbuf(cinbuf);
-   system("PAUSE");
+    std::cin.rdbuf(cinbuf);
+    system("PAUSE");
 #endif
-   return 0;
+    return 0;
 }
