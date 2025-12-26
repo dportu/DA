@@ -1,119 +1,72 @@
+// Esquema de la entrada: caso de prueba que marca el final
 #include <iostream>
 #include <fstream>
-#include <climits>
 #include <vector>
-#include "Matriz.h"
 using namespace std;
 
-vector<int> dardos_min(vector<int> const& M, int C) {
-    int n = M.size();
-    Matriz<int> dardos(n+1, C+1, INT_MAX);
-    dardos[0][0] = 0;
-    for (int i = 1; i <= n; ++i) {
-        dardos[i][0] = 0;
-        for (int j = 1; j <= C; ++j) {
-            if (M[i-1] > j) {
-                dardos[i][j] = dardos[i-1][j];
+bool resuelveCaso() {
+
+  
+  int N; // # of elements
+
+  cin >> N;
+
+  if (N == 0)
+    return false;
+
+    // vector initialization
+    vector<int> v(N);
+    for(int i = 0; i < N; i++) {
+        int elem;
+        cin >> elem;
+        v[i] = elem;
+    }
+
+    bool result = true;
+    int count = 1;
+    // trivial case
+    if(N == 1) {
+    }
+    else {
+        // algorithm
+        int previous = v.back();
+        int i = N-2;
+        while(result && i >= 0) {
+            if(v[i] > previous) {
+                result = true;
             }
             else {
-                int a = dardos[i-1][j];
-                int b = dardos[i][j - M[i-1]];
-
-                if(b != INT_MAX) {
-                    b++;
-                }
-                dardos[i][j] = min(a, b);
+                previous = v[i];
+                count++;
             }
+
+            i--;
         }
     }
 
-    vector<int> sol;
-    if (dardos[n][C] != INT_MAX) {
-        int i = n, j = C;
-        while (j > 0) { // no hemos llegado a la puntuacion necesaria aun
-            if (M[i-1] <= j && dardos[i][j] != dardos[i-1][j]) {
-            // necesitamos un dardo en la zona i de la diana
-                sol.push_back(M[i-1]); 
-                j = j - M[i-1];
-            } 
-            else { // otro dardo en la zona i haria que nos pasasemos de puntos, asi que retrocedemos
-            --i;
-            }
-        }
+    if(count < N) {
+        count--;
     }
-    return sol;
-}
+    printf("%d\n", count);
 
-bool resuelveCaso() {
-   
-   // leer los datos de la entrada
-   int valor, S;
-   cin >> valor >> S;
-   if (!std::cin)  // fin de la entrada
-      return false;
-   
-   vector<int> puntuaciones;
-   for(int i = 0; i < S; i++) {
-      int v;
-      cin >> v;
-      puntuaciones.push_back(v);
-   }
-   // resolver el caso posiblemente llamando a otras funciones
-   //diana(puntuaciones, valor, S);
-   vector<int> sol = dardos_min(puntuaciones, valor);
-   
-
-   // escribir la solución
-
-
-   if(sol.size() == 0) {
-    printf("Imposible\n");
-   }
-   else {
-    printf("%d:", sol.size());
-    for(int i = 0; i < sol.size(); i++) {
-        printf(" %d", sol[i]);
-    }
-    printf("\n");
-   }
-   
-   return true;
-}
-
-//@ </answer>
-//  Lo que se escriba dejado de esta línea ya no forma parte de la solución.
+    return true;
+} // casoDePrueba
 
 int main() {
-   // ajustes para que cin extraiga directamente de un fichero
-#ifndef DOMJUDGE
+
+  #ifndef DOMJUDGE
    std::ifstream in("casos.txt");
    auto cinbuf = std::cin.rdbuf(in.rdbuf());
-#endif
-   
-   while (resuelveCaso());
-   
-   // para dejar todo como estaba al principio
-#ifndef DOMJUDGE
-   std::cin.rdbuf(cinbuf);
-   system("PAUSE");
-#endif
+    #endif
+    
+    while (resuelveCaso());
+    
+    // para dejar todo como estaba al principio
+    #ifndef DOMJUDGE
+    std::cin.rdbuf(cinbuf);
+    system("PAUSE");
+    #endif
    return 0;
-}
-/*
 
 
-int diana(vector<int> const& M, int valor, int sector) {
-   Matriz<int> targets(valor+1, sector+1, INT_MAX);
-   targets[0][0] = 0;
-   for (int i = 1; i <= valor; ++i) {
-      targets[i][0] = 0;
-      for (int j = 1; j <= sector; ++j) {
-         if (M[i-1] > j) {
-            targets[i][j] = targets[i-1][j];
-         }
-         else {
-            targets[i][j] = min(targets[i][j - 1] + 1, targets[i - M[i-1]][j]);
-         }
-      }
-   }
-*/
+} // main
