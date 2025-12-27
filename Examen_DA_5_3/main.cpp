@@ -33,16 +33,16 @@ int calc(int x, int a, int b, int mod) {
     return (x*a+b)%mod;
 }
 
-int bfs(int origen, int destino, int mod, const vector<pair<int,int>> &&ops) {
+int bfs(int origen, int destino, int mod, const vector<pair<int,int>> &ops) {
     if (origen == destino) return 0;
-    vector<int> distancia(ops.size(), INF);
+    vector<int> distancia(mod, INF);
     distancia[origen] = 0;
     queue<int> cola; 
     cola.push(origen);
     while (!cola.empty()) {
         int v = cola.front(); 
         cola.pop();
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < ops.size(); ++i) {
             int w = calc(v, ops[i].first, ops[i].second, mod);
             if (distancia[w] == INF) {
                 distancia[w] = distancia[v] + 1;
@@ -57,6 +57,8 @@ int bfs(int origen, int destino, int mod, const vector<pair<int,int>> &&ops) {
             }
         }
     }
+
+    return -1; // we only get here if the destination isn't in the graph
 }
 
 bool resuelveCaso() {
@@ -82,6 +84,7 @@ bool resuelveCaso() {
    // resolver el caso posiblemente llamando a otras funciones
    
    // escribir la solución
+   cout << bfs(S, T, M, ops) << "\n";
 
    return true;
 }
